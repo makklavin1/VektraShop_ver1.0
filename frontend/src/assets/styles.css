@@ -1,0 +1,68 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+a {
+  color: #ff8c00;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e67e22;
+}
+
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.nav-link {
+  color: #ff8c00 !important;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #e67e22 !important;
+}
+
+.btn-outline-danger {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-outline-danger:hover {
+  color: #ffffff;
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #ff8c00;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.btn-primary {
+  background-color: #ff8c00;
+  border-color: #ff8c00;
+}
+
+.btn-primary:hover {
+  background-color: #e67e22;
+  border-color: #e67e22;
+}
