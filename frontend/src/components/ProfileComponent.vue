@@ -1,42 +1,54 @@
 <template>
   <div class="profile">
-    <h1 class="display-4 mb-4">Profile</h1>
-    <div class="card p-3">
-      <div class="card-body">
-        <h5 class="card-title">Balance: {{ user.balance }}</h5>
-        <p class="card-text">Red Cards: {{ user.red_cards }}</p>
-        <p class="card-text">Yellow Cards: {{ user.yellow_cards }}</p>
-        <h6 class="mt-4">Purchase History</h6>
-        <ul class="list-group">
-          <li class="list-group-item" v-for="history in user.purchase_history" :key="history.id">
-            {{ history.product.name }} - {{ formatDate(history.date) }}
-          </li>
-        </ul>
-      </div>
+    <h1 class="display-4 mb-4">Личный кабинет</h1>
+    <nav class="profile-nav">
+      <button @click="currentSection = 'balance'" :class="{ active: currentSection === 'balance' }">Баланс</button>
+      <button @click="currentSection = 'orders'" :class="{ active: currentSection === 'orders' }">Заказы</button>
+      <button @click="currentSection = 'history'" :class="{ active: currentSection === 'history' }">История заказов</button>
+    </nav>
+    <div v-if="currentSection === 'balance'">
+      <BalanceAndCards :user="user" />
+    </div>
+    <div v-if="currentSection === 'orders'">
+      <ActiveOrdersComponent :orders="user.active_orders" />
+    </div>
+    <div v-if="currentSection === 'history'">
+      <PurchaseHistoryComponent :purchaseHistory="user.purchase_history" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import BalanceAndCards from './BalanceComponent.vue';
+import ActiveOrdersComponent from './ActiveOrdersComponent.vue';
+import PurchaseHistoryComponent from './PurchaseHistoryComponent.vue';
 
 export default {
   name: 'ProfileComponent',
+  components: {
+    BalanceAndCards,
+    ActiveOrdersComponent,
+    PurchaseHistoryComponent
+  },
   data() {
     return {
-      user: {}
+      user: {},
+      currentSection: 'balance',
+      telegramLink: ''
     }
   },
   created() {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.get('users/profile/', {
+      axios.get('/users/profile/', {
         headers: {
           'Authorization': `Token ${token}`
         }
       })
       .then(response => {
         this.user = response.data;
+        this.telegramLink = `https://t.me/vektrashop_bot?start=${response.data.telegram_token}`;
       })
       .catch(error => {
         console.error('Error fetching profile data', error.response.data);
@@ -47,48 +59,44 @@ export default {
     } else {
       this.$router.push('/login');
     }
-  },
-  methods: {
-    formatDate(value) {
-      if (value) {
-        return new Date(value).toLocaleString();
-      }
-    }
   }
 }
 </script>
 
 <style scoped>
 .profile {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.card {
-  background-color: #fff;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.profile-nav {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1em;
 }
 
-.card-title {
-  font-size: 1.5em;
+.profile-nav button {
+  padding: 0.5em 1em;
+  border: none;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.profile-nav button:hover {
+  background-color: #e0e0e0;
+}
+
+.profile-nav button.active {
+  background-color: #d0d0d0;
   font-weight: bold;
-  color: #ff8c00;
 }
 
-.card-text {
-  font-size: 1.2em;
-  margin: 10px 0;
-}
-
-.list-group-item {
+.profile-section {
   background-color: #fff;
-  border: none;
-  border-bottom: 1px solid #ddd;
-}
-
-.list-group-item:last-child {
-  border-bottom: none;
+  padding: 1em;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>

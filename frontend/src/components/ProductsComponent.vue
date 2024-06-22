@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-4 mb-4">Products</h1>
+    <h1 class="display-4 mb-4"></h1>
     <div class="row">
       <div class="col-md-4 mb-4" v-for="product in products" :key="product.id">
         <div class="card h-100">
@@ -8,8 +8,16 @@
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">{{ product.description }}</p>
-            <p class="card-text">{{ product.price }}</p>
-            <button class="btn btn-primary btn-block" @click="addToCart(product)">Add to Cart</button>
+            <p class="card-text">Цена {{ product.price }}</p>
+            <div class="stock-info">
+              <p v-if="product.stock > 0" class="card-text">В наличии: {{ product.stock }}</p>
+            </div>
+            <button
+              :class="['btn', 'btn-block', product.stock > 0 ? 'btn-primary' : 'btn-secondary']"
+              :disabled="product.stock === 0"
+              @click="addToCart(product)">
+              {{ product.stock > 0 ? 'В корзину' : 'Нет в наличии' }}
+            </button>
           </div>
         </div>
       </div>
@@ -19,6 +27,7 @@
 
 <script>
 import axios from 'axios';
+import eventBus from '../eventBus';
 
 export default {
   name: 'ProductsComponent',
@@ -29,18 +38,19 @@ export default {
   },
   created() {
     const token = localStorage.getItem('token');
-    axios.get('products/', {
-      headers: {
-        'Authorization': `Token ${token}`
-      }
-    }).then(response => {
-      this.products = response.data;
-    }).catch(error => {
-      console.error('Error fetching products', error);
-      if (error.response.status === 401) {
-        this.$router.push('/login');
-      }
-    });
+    if (token) {
+      axios.get('/products/', {
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      }).then(response => {
+        this.products = response.data;
+      }).catch(error => {
+        console.error('Error fetching products', error);
+      });
+
+      eventBus.on('product-purchased', this.updateStock);
+    }
   },
   methods: {
     getImageUrl(image) {
@@ -57,11 +67,34 @@ export default {
       }
       localStorage.setItem('cart', JSON.stringify(cart));
       this.$emit('update-cart', cart);
+      eventBus.emit('cart-updated', cart);
+    },
+    updateStock({id, quantity}) {
+      const product = this.products.find(p => p.id === id);
+      if (product) {
+        product.stock -= quantity;
+      }
     }
+  },
+  beforeUnmount() {
+    eventBus.off('product-purchased', this.updateStock);
   }
 }
 </script>
 
 <style scoped>
-/* Ваши стили здесь */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stock-info {
+  height: 24px; /* высота текста с наличием */
+  margin-bottom: 10px; /* отступ между текстом и кнопкой */
+}
+
+.btn-block {
+  margin-top: auto;
+}
 </style>

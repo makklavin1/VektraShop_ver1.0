@@ -1,0 +1,6 @@
+<!-- users/templates/users/profile.html -->
+<div id="app">
+    <profile-component :telegram-token="{{ user.telegram_token|json }}"></profile-component>
+</div>
+
+<script src="{% static 'js/app.js' %}"></script>

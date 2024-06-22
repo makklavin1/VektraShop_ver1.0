@@ -5,6 +5,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles.css';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Импортируем стили Font Awesome
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const app = createApp(App);
 

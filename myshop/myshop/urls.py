@@ -8,7 +8,8 @@ urlpatterns = [
     path('api/auth/', include('dj_rest_auth.urls')),
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     path('api/products/', include('products.urls')),
-    path('api/users/', include('users.urls')),  # Добавьте этот маршрут
+    path('api/users/', include('users.urls')),
+    path('api/orders/', include('orders.urls')),# Добавьте этот маршрут
 ]
 
 if settings.DEBUG:

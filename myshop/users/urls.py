@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserProfileView, UserStatsView, CheckoutView,CustomAuthToken,ProductListView
+from .views import UserProfileView, UserStatsView, CheckoutView,CustomAuthToken,UserOrdersView,link_telegram
 
 
 urlpatterns = [
@@ -7,5 +7,6 @@ urlpatterns = [
     path('stats/', UserStatsView.as_view(), name='user-stats'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),  # Добавьте этот маршрут
     path('login/', CustomAuthToken.as_view(), name='login'),
-    path('products/', ProductListView.as_view(), name='product-list'),
+    path('orders/', UserOrdersView.as_view(), name='user-orders'),
+    path('link-telegram/', link_telegram, name='link-telegram'),
 ]

@@ -2,13 +2,13 @@
   <div id="app">
     <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
-        <h1 class="navbar-brand">My Shop</h1>
+        <h1 class="navbar-brand">Вектра</h1>
         <nav class="nav">
-          <router-link class="nav-link" to="/">Home</router-link>
-          <router-link v-if="isAuthenticated" class="nav-link" to="/profile">Profile</router-link>
-          <router-link v-if="isAuthenticated" class="nav-link" to="/stats">Stats</router-link>
-          <router-link v-if="!isAuthenticated" class="nav-link" to="/login">Login</router-link>
-          <button v-if="isAuthenticated" class="btn btn-outline-danger ml-auto" @click="logout">Logout</button>
+          <router-link class="nav-link" to="/">Главная</router-link>
+          <router-link v-if="isAuthenticated" class="nav-link" to="/profile">Личный кабинет</router-link>
+          <router-link v-if="isAuthenticated" class="nav-link" to="/stats">Статистики</router-link>
+          <router-link v-if="!isAuthenticated" class="nav-link" to="/login">Вход</router-link>
+          <button v-if="isAuthenticated" class="btn btn-outline-danger ml-auto" @click="logout">Выйти</button>
         </nav>
       </div>
     </header>
@@ -22,7 +22,7 @@
 <script>
 import axios from 'axios';
 import CartComponent from './components/CartComponent.vue';
-import eventBus from './eventBus'; // Импорт шины событий
+import eventBus from './eventBus';
 
 export default {
   name: 'App',
@@ -42,7 +42,6 @@ export default {
   methods: {
     updateCart(cart) {
       this.cartItems = cart;
-      eventBus.emit('cart-updated');
     },
     loadCart() {
       let cart = localStorage.getItem('cart');
@@ -72,13 +71,13 @@ export default {
       localStorage.removeItem('token');
       this.$auth.clearUser();
       this.isAuthenticated = false;
-      eventBus.emit('user-authenticated'); // Вызов события аутентификации пользователя
+      eventBus.emit('user-authenticated');
       this.$router.push('/');
     }
   },
   mounted() {
     this.loadCart();
-    this.updateAuthenticationStatus(); // Ensure the authentication status is checked on mount
+    this.updateAuthenticationStatus();
   },
   beforeUnmount() {
     eventBus.off('user-authenticated', this.updateAuthenticationStatus);

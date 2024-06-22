@@ -66,3 +66,10 @@ a:hover {
   background-color: #e67e22;
   border-color: #e67e22;
 }
+
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.5s;
+}
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
+}

@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+import environ
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'products',
     'users',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +159,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'myshop.urls'
 
 AUTH_USER_MODEL = 'users.User'
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+env = environ.Env()
+environ.Env.read_env()
+TELEGRAM_ADMIN_CHAT_ID = env('TELEGRAM_ADMIN_CHAT_ID')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+

@@ -1,16 +1,16 @@
 <template>
   <div class="stats">
-    <h1 class="display-4 mb-4">Stats</h1>
+    <h1 class="display-4 mb-4"></h1>
     <div class="card p-3">
       <div class="card-body">
-        <h6 class="mt-4">Users Statistics</h6>
+        <h6 class="mt-4">Статистика по компании</h6>
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Balance</th>
-              <th>Red Cards</th>
-              <th>Yellow Cards</th>
+              <th>Имя</th>
+              <th>Баланс</th>
+              <th>Красные карточки</th>
+              <th>Желтые карточки</th>
             </tr>
           </thead>
           <tbody>
